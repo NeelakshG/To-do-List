@@ -183,6 +183,12 @@ p {
     width: fit-content;
 }
 
+span {
+    font-weight: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
 /* Content Sectioning */
 
 main {}
@@ -273,6 +279,19 @@ a:active,
 a:focus,
 a:hover {
     text-decoration: none;
+}
+
+.link-button {
+    border: none;
+    color: var(--color-link);
+    box-shadow: none;
+    padding: 0;
+}
+
+.link-button:hover {
+    box-shadow: none;
+    transform: unset;
+    text-decoration: underline;
 }
 
 mark,
@@ -473,6 +492,21 @@ input:disabled {
     opacity: 0.6;
 }
 
+input[type="number"].buttonless {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+input[type="number"].buttonless::-webkit-inner-spin-button {
+    display: none;
+    appearance: none;
+}
+
+input[type="number"].buttonless::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 input[type="checkbox"],
 input[type="radio"] {
     padding: 0.5rem;
@@ -580,7 +614,7 @@ details[open] summary {
 }
 
 .card,
-.button-card {
+.card-button {
     background-color: var(--background-muted);
     color: var(--color-primary);
     padding: 1rem;
@@ -591,15 +625,15 @@ details[open] summary {
     border: 1px solid var(--color-link-transparent);
 }
 
-.button-card {
+.card-button {
     border: 1px solid var(--border-secondary);
 }
 
-.button-card {
+.card-button {
     box-shadow: none;
 }
 
-.button-card:hover {
+.card-button:hover {
     transform: translate(0);
     box-shadow: none;
     border-color: var(--border-highlight);

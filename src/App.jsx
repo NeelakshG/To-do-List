@@ -1,74 +1,84 @@
-import { Header } from "./components/Header"
-import { Tabs } from "./components/Tabs"
-import { TodoInput } from "./components/TodoInput"
-import { TodoList } from "./components/TodoList"
+import { Header } from "./components/Header";
+import { Tabs } from "./components/Tabs";
+import { TodoInput } from "./components/TodoInput";
+import { TodoList } from "./components/TodoList";
 
-import { useState, useEffect } from 'react'
-
+import { useState, useEffect } from "react";
 function App() {
   // const todos = [
-  // { input: 'Hello! Add your first todo!', complete: true },
-  // { input: 'Get the groceries!', complete: false },
-  // { input: 'Learn how to web design', complete: false },
-  // { input: 'Say hi to gran gran', complete: true },
-  // ]
+  //   { input: "Hello! Add your first todo!", complete: true },
+  //   { input: "Get the groceries!", complete: false },
+  //   { input: "Learn how to web design", complete: false },
+  //   { input: "Say hi to gran gran", complete: true },
+  // ];
 
   const [todos, setTodos] = useState([
-    { input: 'Hello! Add your first todo!', complete: true }
-  ])
-  const [selectedTab, setSelectedTab] = useState('Open')
+    { input: "Hello! Add your first todo!", complete: true },
+  ]); //is a hook used to manipulate data
+  // useState does not need a param but we decided to add it
+
+  const [selectedTab, setSelectedTab] = useState("Open"); //in react, when destructuring an array, the second function is always a function
 
   function handleAddTodo(newTodo) {
-    const newTodoList = [...todos, { input: newTodo, complete: false }]
-    setTodos(newTodoList)
-    handleSaveData(newTodoList)
+    //we are considering the case where we add an inputed todo into the list
+    //the way react sets things up, its easier to just make a new list when adding to a list
+    //we then pass it along to the TodoInput child seen below in the code
+    const newTodoList = [...todos, { input: newTodo, complete: false }];
+    setTodos(newTodoList);
+    handleSaveData(newTodoList);
+    console.log("Asdasd");
   }
 
   function handleCompleteTodo(index) {
-    // update/edit/modify
-    let newTodoList = [...todos]
-    let completedTodo = todos[index]
-    completedTodo['complete'] = true
-    newTodoList[index] = completedTodo
-    setTodos(newTodoList)
-    handleSaveData(newTodoList)
-  }
-
-  function handleEditTodo(index) {
-    // step 1 - create a duplicate array
-    // step 2 - create a new variable and assign the current value of the todo that needs editing to it
-    // step 3 - set the input value equal to the current value of the todo in question
-    // step 4 - copy the delete functionality and filter out the todo @ index from the duplicate array
-    // step 5 - set the todo state equal to the filtered duplicate array
-    // step 6 - now the user can edit the todo and re-add it when satisfied
+    //update/edit/modify
+    let newTodoList = [...todos]; //create a shallow copy of the todo
+    let completedTodo = todos[index]; //store the todo we have set to as done,and update the complete value
+    completedTodo["complete"] = true;
+    newTodoList[index] = completedTodo;
+    setTodos(newTodoList);
+    handleSaveData(newTodoList);
   }
 
   function handleDeleteTodo(index) {
     let newTodoList = todos.filter((val, valIndex) => {
-      return valIndex !== index
-    })
-    setTodos(newTodoList)
-    handleSaveData(newTodoList)
-  }
+      return valIndex !== index; //"Keep all items except the one at the given index."
+    });
 
-  function handleSaveData(currTodos) {
-    localStorage.setItem('todo-app', JSON.stringify({ todos: currTodos }))
+    setTodos(newTodoList); //set the state of the todo List into this new Todo
+    handleSaveData(newTodoList);
   }
 
   useEffect(() => {
-    if (!localStorage || !localStorage.getItem('todo-app')) { return }
-    let db = JSON.parse(localStorage.getItem('todo-app'))
-    setTodos(db.todos)
-  }, [])
+    if (!localStorage || !localStorage.getItem("todo-app")) {
+      return;
+    } //if there is no local storage, or there is a localStorage but the item todo-app doesn not exsist, return nothing
+    let db = JSON.parse(localStorage.getItem("todo-app"));
+    setTodos(db.todos);
+  }, []);
+
+  function handleSaveData(currTodos) {
+    localStorage.setItem("todo-app", JSON.stringify({ todos: currTodos }));
+  }
 
   return (
     <>
-      <Header todos={todos} />
-      <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} todos={todos} />
-      <TodoList handleCompleteTodo={handleCompleteTodo} handleDeleteTodo={handleDeleteTodo} selectedTab={selectedTab} todos={todos} />
-      <TodoInput handleAddTodo={handleAddTodo} />
+      <Header todos={todos}> </Header>
+      <Tabs
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        todos={todos}
+      ></Tabs>
+      <TodoList
+        handleDeleteTodo={handleDeleteTodo}
+        selectedTab={selectedTab}
+        todos={todos}
+        handleCompleteTodo={handleCompleteTodo}
+      >
+        {" "}
+      </TodoList>
+      <TodoInput handleAddTodo={handleAddTodo}> </TodoInput>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
